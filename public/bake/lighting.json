@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "generated": "2026-09-27T16:32:57.200Z",
+  "parts": {
+    "main-copper": {
+      "offset": 0,
+      "count": 2747
+    },
+    "j1-flange-left": {
+      "offset": 2747,
+      "count": 715
+    },
+    "j1-flange-right": {
+      "offset": 3462,
+      "count": 715
+    },
+    "j1-gasket": {
+      "offset": 4177,
+      "count": 292
+    },
+    "j1-bolts": {
+      "offset": 4469,
+      "count": 1328
+    },
+    "j2-flange-left": {
+      "offset": 5797,
+      "count": 715
+    },
+    "j2-flange-right": {
+      "offset": 6512,
+      "count": 715
+    },
+    "j2-gasket": {
+      "offset": 7227,
+      "count": 292
+    },
+    "j2-bolts": {
+      "offset": 7519,
+      "count": 1328
+    },
+    "main-steel-a": {
+      "offset": 8847,
+      "count": 637
+    },
+    "main-steel-b": {
+      "offset": 9484,
+      "count": 2542
+    },
+    "valve-body": {
+      "offset": 12026,
+      "count": 1365
+    },
+    "valve-bonnet": {
+      "offset": 13391,
+      "count": 294
+    },
+    "valve-stem": {
+      "offset": 13685,
+      "count": 100
+    },
+    "valve-wheel": {
+      "offset": 13785,
+      "count": 1241
+    },
+    "valve-spokes": {
+      "offset": 15026,
+      "count": 408
+    },
+    "tee-collar": {
+      "offset": 15434,
+      "count": 196
+    },
+    "branch": {
+      "offset": 15630,
+      "count": 957
+    },
+    "branch-coupling": {
+      "offset": 16587,
+      "count": 132
+    },
+    "coupling--15": {
+      "offset": 16719,
+      "count": 196
+    },
+    "coupling--12": {
+      "offset": 16915,
+      "count": 196
+    },
+    "support-0": {
+      "offset": 17111,
+      "count": 479
+    },
+    "support-1": {
+      "offset": 17590,
+      "count": 479
+    },
+    "support-2": {
+      "offset": 18069,
+      "count": 479
+    },
+    "support-3": {
+      "offset": 18548,
+      "count": 479
+    },
+    "support-4": {
+      "offset": 19027,
+      "count": 479
+    },
+    "rack-1": {
+      "offset": 19506,
+      "count": 3297
+    },
+    "rack-2": {
+      "offset": 22803,
+      "count": 3925
+    },
+    "rack-3": {
+      "offset": 26728,
+      "count": 3612
+    },
+    "rack-post-0": {
+      "offset": 30340,
+      "count": 120
+    },
+    "rack-post-1": {
+      "offset": 30460,
+      "count": 120
+    },
+    "rack-post-2": {
+      "offset": 30580,
+      "count": 120
+    },
+    "trunk": {
+      "offset": 30700,
+      "count": 3403
+    },
+    "overhead": {
+      "offset": 34103,
+      "count": 4025
+    }
+  },
+  "floor": {
+    "offset": 38128,
+    "width": 288,
+    "height": 192
+  }
+}

@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pipeworks — Mechanical &amp; Plumbing Engineering</title>
+    <meta
+      name="description"
+      content="Pipeworks designs, prefabricates and installs precision pipe systems for hospitals, hotels, labs and high-rise buildings. Hydraulic design, BIM coordination, smart shut-off and 24/7 response."
+    />
+    <meta name="theme-color" content="#0a0b0d" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="canonical" href="https://pipeworks.example/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Pipeworks" />
+    <meta property="og:title" content="Pipeworks — Everything flows through the details" />
+    <meta property="og:description" content="Precision pipe systems for buildings that can't afford a leak." />
+    <meta property="og:url" content="https://pipeworks.example/" />
+    <meta property="og:image" content="https://pipeworks.example/og.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Warm up the baked lighting fetch while the JS parses. -->
+    <link rel="preload" href="/bake/lighting.json" as="fetch" crossorigin />
+    <link rel="preload" href="/bake/lighting.bin" as="fetch" crossorigin />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Plumber",
+        "name": "Pipeworks",
+        "url": "https://pipeworks.example/",
+        "email": "hello@pipeworks.example",
+        "telephone": "+1-555-010-0199",
+        "description": "Mechanical and plumbing engineering: hydraulic design, BIM coordination, off-site prefabrication, installation, smart leak protection and 24/7 maintenance.",
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "00:00",
+          "closes": "23:59"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Services",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Design & BIM coordination" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Off-site prefabrication" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Installation & commissioning" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Maintenance & 24/7 response" } }
+          ]
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- Layer 0 — WebGL. Decorative: every idea it shows is also stated in the text. -->
+    <div class="stage" aria-hidden="true">
+      <canvas id="webgl"></canvas>
+      <div class="stage__poster"></div>
+    </div>
+
+    <header class="nav" data-nav>
+      <a class="nav__brand" href="#top" aria-label="Pipeworks — home">
+        <svg class="nav__mark" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M4 22h9a5 5 0 0 0 5-5V4" fill="none" stroke="currentColor" stroke-width="3.2" />
+          <path d="M28 10h-5a5 5 0 0 0-5 5v13" fill="none" stroke="currentColor" stroke-width="3.2" opacity=".55" />
+        </svg>
+        <span>Pipeworks</span>
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav__links">
+          <li><a href="#materials">Materials</a></li>
+          <li><a href="#precision">Precision</a></li>
+          <li><a href="#flow">Flow</a></li>
+          <li><a href="#control">Control</a></li>
+          <li><a href="#systems">Services</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn--small magnetic" href="#contact"><span>Start a project</span></a>
+    </header>
+
+    <main id="main">
+      <!-- 00 · Hero -->
+      <section class="section section--hero" id="top" data-shot="hero" aria-labelledby="hero-title">
+        <div class="section__inner">
+          <p class="eyebrow reveal">Mechanical &amp; Plumbing Engineering</p>
+          <h1 class="display" id="hero-title" data-split>Everything <em>flows</em> through the details.</h1>
+          <div class="hero__foot">
+            <p class="lede reveal">
+              We design, prefabricate and install pipe systems for buildings that can’t afford a leak — hospitals, hotels,
+              laboratories and the towers above them.
+            </p>
+            <div class="hero__actions reveal">
+              <a class="btn magnetic" href="#contact"><span>Start a project</span></a>
+              <a class="btn btn--ghost magnetic" href="#materials"><span>See the system</span></a>
+            </div>
+          </div>
+        </div>
+        <ul class="hero__meta reveal" aria-label="At a glance">
+          <li><strong>Est. 1998</strong></li>
+          <li>Licensed &amp; bonded</li>
+          <li>24/7 emergency response</li>
+        </ul>
+        <div class="scroll-cue" aria-hidden="true"><span></span>Scroll</div>
+      </section>
+
+      <!-- 01 · Materials -->
+      <section class="section section--left" id="materials" data-shot="materials" aria-labelledby="materials-title">
+        <span class="ghost" data-speed="0.55" aria-hidden="true">Cu</span>
+        <div class="section__inner">
+          <p class="eyebrow reveal"><span class="index">01</span> Material honesty</p>
+          <h2 class="headline" id="materials-title" data-split>Copper that ages with grace. Steel that never&nbsp;flinches.</h2>
+          <p class="body reveal">
+            Every run starts with the right metal for the medium. We specify it, source it mill-certified and trace every
+            heat number from the foundry to your riser.
+          </p>
+          <dl class="glass spec reveal">
+            <div><dt>Type L &amp; K copper</dt><dd>Potable water, medical gas</dd></div>
+            <div><dt>316L stainless</dt><dd>Process lines, aggressive chemistry</dd></div>
+            <div><dt>Ductile iron</dt><dd>Fire mains, high-pressure trunks</dd></div>
+            <div><dt>PEX-a &amp; PP-R</dt><dd>Residential and retrofit</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- 02 · Precision -->
+      <section class="section section--right" id="precision" data-shot="precision" aria-labelledby="precision-title">
+        <span class="ghost" data-speed="0.55" aria-hidden="true">±0.5</span>
+        <div class="section__inner">
+          <p class="eyebrow reveal"><span class="index">02</span> Prefabricated precision</p>
+          <h2 class="headline" id="precision-title" data-split>Tolerances you’d need a microscope to argue&nbsp;with.</h2>
+          <p class="body reveal">
+            Spools are built from the coordinated BIM model in our climate-controlled shop, pressure-tested, then delivered
+            ready to bolt in. Less hot work on site. No surprises behind finished walls.
+          </p>
+          <ul class="stats reveal">
+            <li class="glass"><strong>±0.5<small>mm</small></strong><span>Fabrication tolerance</span></li>
+            <li class="glass"><strong>72<small>%</small></strong><span>Of spools built off-site</span></li>
+            <li class="glass"><strong>1.5<small>×</small></strong><span>Hydrostatic test on every joint</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 03 · Flow -->
+      <section class="section section--left" id="flow" data-shot="flow" aria-labelledby="flow-title">
+        <span class="ghost" data-speed="0.55" aria-hidden="true">H₂O</span>
+        <div class="section__inner">
+          <p class="eyebrow reveal"><span class="index">03</span> Hydraulic design</p>
+          <h2 class="headline" id="flow-title" data-split>Pressure, made <em>visible</em>.</h2>
+          <p class="body reveal">
+            We model velocity, head loss and water hammer before a single hanger goes up — so the fortieth floor feels like
+            the first, and nothing knocks at 3&nbsp;a.m.
+          </p>
+          <ul class="glass checklist reveal">
+            <li>Hydraulic &amp; surge modelling</li>
+            <li>Legionella-safe temperature design</li>
+            <li>Booster sets &amp; pressure-reducing stations</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 04 · Control -->
+      <section class="section section--right" id="control" data-shot="control" aria-labelledby="control-title">
+        <span class="ghost" data-speed="0.55" aria-hidden="true">90°</span>
+        <div class="section__inner">
+          <p class="eyebrow reveal"><span class="index">04</span> Smart shut-off</p>
+          <h2 class="headline" id="control-title" data-split>A quarter turn between a drip and a&nbsp;disaster.</h2>
+          <p class="body reveal">
+            Motorised isolation valves, flow sensors and leak detection wired into your BMS. When something deviates, the
+            system closes itself — and tells us before it tells you.
+          </p>
+          <div class="glass valve-ui reveal">
+            <button class="btn btn--ghost magnetic" type="button" data-valve-toggle aria-pressed="false">
+              <span>Shut off the flow</span>
+            </button>
+            <p class="valve-ui__status">Flow: <strong data-valve-status aria-live="polite">open</strong></p>
+            <p class="valve-ui__hint" data-webgl-only>Or hover the valve and click it.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 · Systems / services -->
+      <section class="section section--center" id="systems" data-shot="systems" aria-labelledby="systems-title">
+        <div class="section__inner">
+          <p class="eyebrow reveal"><span class="index">05</span> Full service</p>
+          <h2 class="headline" id="systems-title" data-split>One network. Zero&nbsp;guesswork.</h2>
+          <ol class="services">
+            <li class="glass reveal" data-speed="1.06">
+              <span class="index">01</span>
+              <h3>Design &amp; BIM coordination</h3>
+              <p>Clash-free LOD 400 models, hydraulic calcs and stamped drawings.</p>
+            </li>
+            <li class="glass reveal" data-speed="1.12">
+              <span class="index">02</span>
+              <h3>Off-site prefabrication</h3>
+              <p>Spools, racks and plant skids built and tested in the shop.</p>
+            </li>
+            <li class="glass reveal" data-speed="1.06">
+              <span class="index">03</span>
+              <h3>Installation &amp; commissioning</h3>
+              <p>Certified crews, pressure testing, flushing and handover docs.</p>
+            </li>
+            <li class="glass reveal" data-speed="1.12">
+              <span class="index">04</span>
+              <h3>Maintenance &amp; 24/7 response</h3>
+              <p>Planned maintenance, remote monitoring and a crew on call — always.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 06 · Contact -->
+      <section class="section section--left section--contact" id="contact" data-shot="contact" aria-labelledby="contact-title">
+        <div class="section__inner">
+          <p class="eyebrow reveal"><span class="index">06</span> Start a project</p>
+          <h2 class="headline" id="contact-title" data-split>Let’s put your building under <em>pressure</em>.</h2>
+          <form class="glass form reveal" name="contact" method="post" data-netlify="true" netlify-honeypot="company-url" data-form>
+            <input type="hidden" name="form-name" value="contact" />
+            <p class="visually-hidden"><label>Leave empty <input name="company-url" tabindex="-1" autocomplete="off" /></label></p>
+            <div class="form__row">
+              <label>Name<input name="name" autocomplete="name" required /></label>
+              <label>Email<input name="email" type="email" autocomplete="email" required /></label>
+            </div>
+            <label
+              >Project type
+              <select name="type">
+                <option>New build</option>
+                <option>Renovation / retrofit</option>
+                <option>Maintenance contract</option>
+                <option>Emergency</option>
+              </select>
+            </label>
+            <label>Tell us about it<textarea name="message" rows="3"></textarea></label>
+            <div class="form__foot">
+              <button class="btn magnetic" type="submit"><span>Send enquiry</span></button>
+              <p class="form__status" data-form-status role="status"></p>
+            </div>
+          </form>
+          <address class="contact-direct reveal">
+            <a href="mailto:hello@pipeworks.example">hello@pipeworks.example</a>
+            <a href="tel:+15550100199">+1 (555) 010-0199</a>
+            <span>Emergency line open 24/7</span>
+          </address>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© <span data-year>2026</span> Pipeworks Mechanical Ltd.</p>
+      <p class="footer__note">Rendered with ray-traced baked light &amp; WebGL.</p>
+      <a href="#top">Back to top ↑</a>
+    </footer>
+
+    <div class="cursor" aria-hidden="true"><span class="cursor__label">Turn</span></div>
+    <div class="loader" aria-hidden="true"><span class="loader__bar"></span><span class="loader__text">Pressurising system</span></div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
