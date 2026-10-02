@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:single": "vite build && node scripts/build-single.mjs",
     "start": "node server/index.js",
     "test": "node --test test/*.test.js"
   },

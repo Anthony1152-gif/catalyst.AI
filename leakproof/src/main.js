@@ -321,8 +321,21 @@ $('#settings-form').addEventListener('input', (e) => {
   save(state);
 });
 
-$('#reset-btn').addEventListener('click', () => {
-  if (!confirm('Erase every tracked item and your savings history from this device?')) return;
+// Two-tap confirmation, kept in the page rather than a confirm() dialog.
+let resetArmed;
+$('#reset-btn').addEventListener('click', (e) => {
+  const btn = e.currentTarget;
+  if (!resetArmed) {
+    btn.textContent = 'Tap again to erase everything';
+    resetArmed = setTimeout(() => {
+      resetArmed = null;
+      btn.textContent = 'Erase all my data';
+    }, 4000);
+    return;
+  }
+  clearTimeout(resetArmed);
+  resetArmed = null;
+  btn.textContent = 'Erase all my data';
   state.items = [];
   commit();
   toast('All data erased.');
@@ -338,7 +351,7 @@ fetch('/api/status')
     toggle.checked = ai;
     if (!ai) {
       $('#ai-toggle-wrap').classList.add('off');
-      $('#ai-note').textContent = 'is off: the server has no Anthropic API key. The on-device scanner handles standard receipts.';
+      $('#ai-note').textContent = 'is off because no AI server is connected. The on-device scanner handles standard receipts.';
     }
   });
 

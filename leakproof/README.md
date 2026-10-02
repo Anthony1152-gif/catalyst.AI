@@ -6,6 +6,7 @@ People lose money to many small, recurring leaks rather than one big one: subscr
 
 ```bash
 npm install
+npm run build:single   # dist-single/leakproof.html: double-click to open, no server needed
 npm run dev      # http://localhost:5173  (app + API in one process)
 npm test         # parser, analysis, merge and draft tests (node:test)
 npm run build && npm start   # production server on :8787 (PORT to change)
