@@ -30,98 +30,157 @@ function render() {
   badge.textContent = report.alerts.length;
 }
 
+// Decorative water line along the bottom of the meter panel.
+const WAVE = `<svg class="wave" viewBox="0 0 800 60" preserveAspectRatio="none" aria-hidden="true">
+  <path class="w2" d="M0 30 Q 100 10 200 30 T 400 30 T 600 30 T 800 30 T 1000 30 T 1200 30 V60 H0Z"/>
+  <path class="w1" d="M0 36 Q 100 18 200 36 T 400 36 T 600 36 T 800 36 T 1000 36 T 1200 36 V60 H0Z"/>
+</svg>`;
+
+let tickerFrame;
+
 function renderMeter({ totals, leaks }) {
+  cancelAnimationFrame(tickerFrame);
   if (!state.items.length) {
     $('#meter').innerHTML = `
-      <div class="empty">
-        <svg class="drop" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3c5 6.5 9 11.6 9 16a9 9 0 0 1-18 0c0-4.4 4-9.5 9-16Z" fill="currentColor"/></svg>
-        <h2>Where is your money leaking?</h2>
-        <p>Paste your receipts and account emails. Leakproof finds forgotten subscriptions, free trials about to charge you, sneaky price hikes and return windows about to close, then writes the email that fixes each one.</p>
+      <div class="tank tank-empty">
+        <p class="eyebrow">Your money leaks</p>
+        <h2 class="tank-headline">Find what’s quietly draining your account.</h2>
+        <p class="tank-copy">Paste your receipts and account emails. Leakproof spots forgotten subscriptions, trials about to charge you, price hikes and closing return windows, then writes the email that fixes each one.</p>
         <div class="row">
-          <button class="btn primary" data-go="scan">Scan my emails</button>
-          <button class="btn" data-demo>Try the demo inbox</button>
+          <button class="btn on-tank" data-demo>Try the demo inbox</button>
+          <button class="btn ghost-tank" data-go="scan">Scan my emails</button>
         </div>
+        ${WAVE}
       </div>`;
     return;
   }
-  const hasLeaks = leaks.length > 0;
+  const recurring = leaks.filter((l) => l.item.kind !== 'order').length;
   $('#meter').innerHTML = `
-    <div class="meter">
-      <div class="meter-label">${hasLeaks ? 'You’re leaking' : 'No open leaks'}</div>
-      <div class="meter-value"><strong>${money(totals.monthly)}</strong><span>a month</span></div>
-      <div class="meter-sub">That’s <b>${money(totals.yearly)}</b> a year on ${count(leaks.filter((l) => l.item.kind !== 'order').length, 'recurring charge')}.</div>
-      <div class="stats">
-        <div class="stat risk"><b>${whole(totals.atRisk)}</b><small>at stake this week</small></div>
-        <div class="stat"><b>${totals.count}</b><small>open leaks</small></div>
-        <div class="stat saved"><b>${whole(totals.saved)}</b><small>saved so far</small></div>
-      </div>
+    <div class="tank">
+      <p class="eyebrow">${leaks.length ? 'You’re leaking' : 'All leaks plugged'}</p>
+      <p class="tank-figure"><span class="num">${money(totals.monthly)}</span><span class="unit">/month</span></p>
+      <p class="ticker" aria-hidden="true"><span id="ticker">$0.0000</span> gone since you opened this page</p>
+      <dl class="tank-stats">
+        <div><dt>Per year</dt><dd>${whole(totals.yearly)}</dd><small>${count(recurring, 'charge')}</small></div>
+        <div class="risk"><dt>Due this week</dt><dd>${whole(totals.atRisk)}</dd><small>${count(leaks.filter((l) => l.urgent).length, 'deadline')}</small></div>
+        <div class="saved"><dt>Saved</dt><dd>${whole(totals.saved)}</dd><small>so far</small></div>
+      </dl>
+      ${WAVE}
     </div>`;
+  startTicker(totals.monthly);
+}
+
+// Counts up what the recurring charges cost per second while the page is open.
+function startTicker(monthly) {
+  const el = $('#ticker');
+  if (!el || !monthly) return;
+  const perMs = monthly / (30.4375 * 86_400_000);
+  const start = performance.now();
+  let last = 0;
+  const tick = (now) => {
+    if (now - last > 120) {
+      el.textContent = `$${((now - start) * perMs).toFixed(4)}`;
+      last = now;
+    }
+    tickerFrame = requestAnimationFrame(tick);
+  };
+  tickerFrame = requestAnimationFrame(tick);
 }
 
 function renderAlerts({ alerts }) {
   $('#alerts').innerHTML = alerts.length
-    ? `<div class="section-head"><h2>Act now</h2><small>${count(alerts.length, 'deadline')} coming up</small></div>
-       ${alerts.map(card).join('')}`
+    ? `<div class="section-head"><h2>Act now</h2><small>soonest first</small></div>
+       <div class="tickets">${alerts.map(ticket).join('')}</div>`
     : '';
 }
 
-function renderLeaks({ leaks }) {
-  const rest = leaks.filter((l) => !l.urgent);
-  $('#leak-list').innerHTML = rest.length
-    ? `<div class="section-head"><h2>All leaks</h2><small>biggest first</small></div>${rest.map(card).join('')}`
-    : '';
-}
-
-function card(leak) {
+function ticket(leak) {
   const { item } = leak;
-  const chip = leak.urgent
-    ? `<span class="chip">${leak.daysLeft === 0 ? 'today' : leak.daysLeft === 1 ? '1 day' : `${leak.daysLeft} days`}</span>`
-    : leak.item.previousAmount
-      ? '<span class="chip soft">price hike</span>'
-      : '';
-  const kindLabel = { subscription: 'Subscription', trial: 'Free trial', order: 'Return window' }[item.kind];
-  const price = item.kind === 'order'
-    ? `${money(item.amount, item.currency)}`
-    : `${money(leak.yearly, item.currency)}<small>/yr</small>`;
-  const sub = [kindLabel, item.itemName, item.kind !== 'order' && item.amount ? `${money(item.amount, item.currency)}${per(item.cadence)}` : null]
-    .filter(Boolean).map(esc).join(' · ');
+  const d = leak.daysLeft;
+  const stub = d === 0 ? '<b>Today</b>' : `<b>${d}</b><span>${d === 1 ? 'day' : 'days'}</span>`;
   return `
-    <article class="card${leak.urgent ? ' urgent' : ''}">
-      <div class="card-top">
-        <div class="avatar" style="background:${hue(item.merchant)}" aria-hidden="true">${esc(item.merchant.charAt(0).toUpperCase())}</div>
-        <div class="card-main">
-          <div class="card-title"><h3>${esc(item.merchant)}${chip}</h3><span class="cost">${price}</span></div>
-          <div class="meta">${sub}</div>
-          <ul class="reasons">${leak.reasons.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>
+    <article class="ticket">
+      <div class="stub" aria-label="${d === 0 ? 'Due today' : `${d} days left`}">${stub}</div>
+      <div class="ticket-body">
+        <div class="row-top">
+          <h3>${esc(item.merchant)}</h3>
+          <span class="amt">${money(item.amount, item.currency)}</span>
         </div>
-      </div>
-      <div class="actions">
-        <button class="btn small ${leak.urgent ? 'urgent' : 'primary'}" data-act="${esc(leak.action)}" data-id="${esc(item.id)}">${esc(actionLabel(leak.action))}</button>
-        ${leak.action === 'negotiate' ? `<button class="btn small" data-act="cancel" data-id="${esc(item.id)}">Cancel it</button>` : ''}
-        <button class="btn small quiet" data-keep="${esc(item.id)}">${item.kind === 'order' ? 'Keeping it' : 'I use this'}</button>
+        <p class="what">${esc(leak.reasons[0])}</p>
+        ${actions(leak, true)}
       </div>
     </article>`;
+}
+
+function renderLeaks({ leaks, totals }) {
+  const rest = leaks.filter((l) => !l.urgent);
+  const max = Math.max(...rest.map((l) => l.yearly), 1);
+  $('#leak-list').innerHTML = rest.length
+    ? `<div class="section-head"><h2>Ongoing leaks</h2><small>biggest first</small></div>
+       <ol class="ledger">${rest.map((l) => row(l, max, totals.yearly)).join('')}</ol>`
+    : '';
+}
+
+function row(leak, max, totalYearly) {
+  const { item } = leak;
+  const tags = [];
+  if (item.previousAmount) tags.push('<span class="tag hike">Price hike</span>');
+  if (leak.converted) tags.push('<span class="tag hike">Trial ended</span>');
+  const meta = [item.itemName, item.amount ? `${money(item.amount, item.currency)}${per(item.cadence)}` : null]
+    .filter(Boolean).map(esc).join(' · ');
+  const share = totalYearly ? Math.round((leak.yearly / totalYearly) * 100) : 0;
+  return `
+    <li class="leak-row">
+      <div class="mark" aria-hidden="true">${esc(item.merchant.charAt(0).toUpperCase())}</div>
+      <div class="leak-main">
+        <div class="row-top">
+          <h3>${esc(item.merchant)}${tags.join('')}</h3>
+          <span class="amt">${money(leak.yearly, item.currency)}<small>/yr</small></span>
+        </div>
+        <div class="meta">${meta}</div>
+        <ul class="reasons">${leak.reasons.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>
+        <div class="share" title="${share}% of your yearly leaks">
+          <span class="bar"><i style="width:${Math.max(4, (leak.yearly / max) * 100).toFixed(1)}%"></i></span>
+          <span class="pct">${share}% of total</span>
+        </div>
+        ${actions(leak, false)}
+      </div>
+    </li>`;
+}
+
+function actions(leak, urgent) {
+  const { item } = leak;
+  return `
+    <div class="actions">
+      <button class="btn small ${urgent ? 'urgent' : 'primary'}" data-act="${esc(leak.action)}" data-id="${esc(item.id)}">${esc(actionLabel(leak.action))}</button>
+      ${leak.action === 'negotiate' ? `<button class="btn small" data-act="cancel" data-id="${esc(item.id)}">Cancel it</button>` : ''}
+      <button class="link" data-keep="${esc(item.id)}">${item.kind === 'order' ? 'Keeping it' : 'I use this'}</button>
+    </div>`;
 }
 
 function renderSaved({ resolved, kept, totals }) {
   const resolvedRows = resolved
     .map((i) => `
-      <div class="line-item">
+      <li class="line-item">
         <div><b>${esc(i.merchant)}</b><span class="meta">${i.kind === 'order' ? 'Returned' : 'Cancelled'}${i.resolvedAt ? ` · ${esc(formatDate(i.resolvedAt.slice(0, 10)))}` : ''}</span></div>
-        <div class="row"><b>+${money(i.savedAmount, i.currency)}${i.kind === 'order' ? '' : '/yr'}</b><button class="btn small quiet" data-undo="${esc(i.id)}">Undo</button></div>
-      </div>`)
+        <div class="line-end"><span class="amt save">+${money(i.savedAmount, i.currency)}${i.kind === 'order' ? '' : '<small>/yr</small>'}</span><button class="link" data-undo="${esc(i.id)}">Undo</button></div>
+      </li>`)
     .join('');
   const keptRows = kept
     .map((i) => `
-      <div class="line-item">
+      <li class="line-item">
         <div><b>${esc(i.merchant)}</b><span class="meta">${i.amount ? `${money(i.amount, i.currency)}${per(i.cadence)}` : ''}</span></div>
-        <button class="btn small quiet" data-undo="${esc(i.id)}">Track again</button>
-      </div>`)
+        <button class="link" data-undo="${esc(i.id)}">Track again</button>
+      </li>`)
     .join('');
   $('#saved').innerHTML = `
-    <div class="saved-hero"><strong>${money(totals.saved)}</strong><span>${resolved.length ? `saved by plugging ${count(resolved.length, 'leak')}` : 'Fix a leak and your savings show up here.'}</span></div>
-    ${resolved.length ? `<h2>Fixed</h2>${resolvedRows}` : ''}
-    ${kept.length ? `<h2>Keeping on purpose</h2><p class="muted">These won’t count as leaks.</p>${keptRows}` : ''}`;
+    <div class="saved-hero">
+      <p class="eyebrow">Money kept</p>
+      <p class="saved-figure">${money(totals.saved)}</p>
+      <p>${resolved.length ? `from plugging ${count(resolved.length, 'leak')}` : 'Fix a leak and the savings add up here.'}</p>
+    </div>
+    ${resolved.length ? `<h2>Fixed</h2><ul class="lines">${resolvedRows}</ul>` : ''}
+    ${kept.length ? `<h2>Keeping on purpose</h2><p class="muted">These don’t count as leaks.</p><ul class="lines">${keptRows}</ul>` : ''}`;
   $('#settings-form').name.value = state.name || '';
 }
 
@@ -264,11 +323,6 @@ function count(n, word) {
   return `${n} ${word}${n === 1 ? '' : 's'}`;
 }
 
-function hue(name) {
-  let h = 0;
-  for (const c of name) h = (h * 31 + c.charCodeAt(0)) % 360;
-  return `hsl(${h} 55% 42%)`;
-}
 
 document.addEventListener('click', (e) => {
   const t = e.target.closest('button, a');

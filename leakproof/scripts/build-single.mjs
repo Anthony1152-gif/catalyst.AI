@@ -21,7 +21,7 @@ const icon = await readFile(join(root, 'public', 'icon.svg'), 'utf8');
 
 // Inline the stylesheet and the script. Function replacers keep "$" in the
 // bundled code from being read as replacement patterns.
-const cssHref = html.match(/<link rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/);
+const cssHref = html.match(/<link rel="stylesheet"[^>]*href="(\/assets\/[^"]+)"[^>]*>/);
 const css = await readFile(join(dist, cssHref[1]), 'utf8');
 html = html.replace(cssHref[0], () => `<style>${css}</style>`);
 
