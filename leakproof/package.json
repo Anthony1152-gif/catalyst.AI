@@ -1,0 +1,23 @@
+{
+  "name": "leakproof",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Leakproof: finds the subscriptions, trials, price hikes and return deadlines quietly draining your money, and drafts the fix.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "node server/index.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=20.19"
+  },
+  "devDependencies": {
+    "vite": "^8.3.2"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.131.0",
+    "zod": "^4.6.5"
+  }
+}

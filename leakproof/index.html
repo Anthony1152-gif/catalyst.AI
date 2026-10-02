@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Leakproof</title>
+    <meta name="description" content="Find the subscriptions, free trials, price hikes and return deadlines quietly draining your money, and fix them in one tap." />
+    <meta name="theme-color" content="#0f1512" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f6f7f4" media="(prefers-color-scheme: light)" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="top">
+      <div class="brand">
+        <svg viewBox="0 0 32 32" aria-hidden="true" class="brand-mark"><path d="M16 3c5 6.5 9 11.6 9 16a9 9 0 0 1-18 0c0-4.4 4-9.5 9-16Z" fill="currentColor"/><path d="M11 20.5l3.4 3.2L21.5 16" fill="none" stroke="var(--bg)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Leakproof</span>
+      </div>
+      <span class="privacy" title="Everything stays in this browser unless you turn on AI scan">Stored on this device only</span>
+    </header>
+
+    <main id="main">
+      <section id="view-leaks" class="view" aria-labelledby="leaks-title">
+        <h1 id="leaks-title" class="sr-only">Your money leaks</h1>
+        <div id="meter"></div>
+        <div id="alerts"></div>
+        <div id="leak-list"></div>
+      </section>
+
+      <section id="view-scan" class="view" hidden aria-labelledby="scan-title">
+        <h1 id="scan-title">Scan your inbox</h1>
+        <p class="lede">Paste receipts, renewal notices, trial emails or order confirmations. Paste as many as you like, with a <code>---</code> line or a <code>From:</code> header between each one.</p>
+        <form id="scan-form">
+          <label for="scan-text" class="sr-only">Emails to scan</label>
+          <textarea id="scan-text" rows="12" placeholder="From: Netflix &lt;info@account.netflix.com&gt;&#10;Subject: Your price is changing&#10;&#10;Your price is changing from $17.99/month to $20.99/month…"></textarea>
+          <label class="toggle" id="ai-toggle-wrap">
+            <input type="checkbox" id="ai-toggle" />
+            <span><strong>AI scan</strong> <span id="ai-note">reads messy emails better. Text is sent to the server for this scan.</span></span>
+          </label>
+          <div class="row">
+            <button type="submit" class="btn primary" id="scan-btn">Find my leaks</button>
+            <button type="button" class="btn ghost" id="demo-btn">Try the demo inbox</button>
+          </div>
+          <p id="scan-result" class="result" role="status" aria-live="polite"></p>
+        </form>
+
+        <details class="manual">
+          <summary>Add one by hand</summary>
+          <form id="manual-form" class="grid">
+            <label>What is it?
+              <select name="kind">
+                <option value="subscription">Subscription</option>
+                <option value="trial">Free trial</option>
+                <option value="order">Purchase I might return</option>
+              </select>
+            </label>
+            <label>Merchant <input name="merchant" required placeholder="Spotify" autocomplete="off" /></label>
+            <label>Price <input name="amount" type="number" step="0.01" min="0" required placeholder="11.99" inputmode="decimal" /></label>
+            <label>Billed
+              <select name="cadence">
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+                <option value="weekly">Weekly</option>
+                <option value="quarterly">Quarterly</option>
+                <option value="">One-off</option>
+              </select>
+            </label>
+            <label>Key date <span class="hint">trial end, return-by or renewal</span> <input name="deadline" type="date" /></label>
+            <button class="btn" type="submit">Add</button>
+          </form>
+        </details>
+      </section>
+
+      <section id="view-saved" class="view" hidden aria-labelledby="saved-title">
+        <h1 id="saved-title">Plugged leaks</h1>
+        <div id="saved"></div>
+        <h2>Settings</h2>
+        <form id="settings-form" class="settings">
+          <label>Name to sign drafted emails with <input name="name" autocomplete="name" placeholder="Your name" /></label>
+        </form>
+        <button type="button" class="btn danger" id="reset-btn">Erase all my data</button>
+      </section>
+    </main>
+
+    <nav class="tabs" aria-label="Sections">
+      <button type="button" data-view="leaks" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3.7 4.8 6.5 8.5 6.5 11.5a6.5 6.5 0 0 1-13 0C5.5 11.5 8.3 7.8 12 3Z"/></svg>
+        Leaks <span class="badge" id="badge" hidden></span>
+      </button>
+      <button type="button" data-view="scan">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7V5a1 1 0 0 1 1-1h2M17 4h2a1 1 0 0 1 1 1v2M20 17v2a1 1 0 0 1-1 1h-2M7 20H5a1 1 0 0 1-1-1v-2M4 12h16"/></svg>
+        Scan
+      </button>
+      <button type="button" data-view="saved">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+        Saved
+      </button>
+    </nav>
+
+    <dialog id="sheet" aria-labelledby="sheet-title">
+      <form method="dialog" class="sheet-inner" id="sheet-form"></form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

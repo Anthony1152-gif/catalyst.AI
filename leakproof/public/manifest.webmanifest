@@ -1,0 +1,12 @@
+{
+  "name": "Leakproof",
+  "short_name": "Leakproof",
+  "description": "Find and fix the subscriptions, trials, price hikes and return deadlines draining your money.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1512",
+  "theme_color": "#0e7c66",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
